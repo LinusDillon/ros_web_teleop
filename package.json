@@ -1,0 +1,20 @@
+{
+  "name": "ros_web_teleop",
+  "version": "0.0.0",
+  "description": "Web based teleop console",
+  "keywords": [
+    "ros"
+  ],
+  "scripts": {
+    "ros_web_teleop": "node scripts/ros_web_teleop.js"
+  },
+  "author": "Linus Dillon",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git://https://github.com/LinusDillon/ros_web_teleop"
+  },
+  "dependencies": {
+    "rosnodejs": "2.1.1"
+  }
+}
