@@ -14,6 +14,14 @@ catkin_package()
 
 install(PROGRAMS
    scripts/ros_web_teleop.js
-   www/*
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
+
+
+install(PROGRAMS
+   www/index.html
+   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}/www
+)
+
+#add_executable(${PROJECT_NAME} scripts/ros_web_teleop.js)
+
