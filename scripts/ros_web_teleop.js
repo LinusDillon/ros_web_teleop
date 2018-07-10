@@ -73,7 +73,6 @@ function rostalker() {
 }
 
 if (require.main === module) {
-  // Invoke Main Talker Function
-  //rostalker();
   http.createServer(httpHandler).listen(8080);
+  rostalker();
 }
