@@ -12,41 +12,42 @@
  * This example demonstrates simple sending of messages over the ROS system.
  */
 
-// Require rosnodejs itself
+// ROS requires
 const rosnodejs = require('rosnodejs');
-// Requires the std_msgs message package
 const std_msgs = rosnodejs.require('std_msgs').msg;
 
+// Web server requires
 var url = require('url');
-var fs = require('fs'); //require filesystem module
-var io = require('socket.io')(http) //require socket.io module and pass the http object (server)
-var path = require('path')
+var path = require('path');
+var fs = require('fs');
 var http = require('http');
+var io = require('socket.io')(http);
 
-var baseDirectory = __dirname + '/public';
+
+var baseDirectory = __dirname + '/www';
 
 /// Simple web server to host files under the wwww sub-folder
 function httpHandler(request, response) {
     try {
-        var requestUrl = url.parse(request.url)
+        var requestUrl = url.parse(request.url);
 
         // need to use path.normalize so people can't access directories underneath baseDirectory
-        var fsPath = baseDirectory+path.normalize(requestUrl.pathname)
+        var fsPath = baseDirectory + path.normalize(requestUrl.pathname);
 
-        var fileStream = fs.createReadStream(fsPath)
-        fileStream.pipe(response)
-        fileStream.on('open', function() {
-             response.writeHead(200)
+        var fileStream = fs.createReadStream(fsPath);
+        fileStream.pipe(response);
+        fileStream.on('open', function () {
+            response.writeHead(200);
+        });
+        fileStream.on('error', function (e) {
+            response.writeHead(404);     // assume the file doesn't exist
+            response.end();
         })
-        fileStream.on('error',function(e) {
-             response.writeHead(404)     // assume the file doesn't exist
-             response.end()
-        })
-   } catch(e) {
-        response.writeHead(500)
-        response.end()     // end the response so browsers don't hang
-        console.log(e.stack)
-   }
+  } catch (e) {
+        response.writeHead(500);
+        response.end();     // end the response so browsers don't hang
+        console.log(e.stack);
+  }
 }
 
 function rostalker() {
