@@ -26,7 +26,7 @@ var io = require('socket.io')(http);
 const { spawn } = require('child_process');
 
 const videoStreamerCommand = 'mjpg_streamer';
-const videoStreamerArguments = ['-o', 'output_http.so -w ./www', '-i', 'input_raspicam.so'];
+const videoStreamerArguments = ['-o', 'output_http.so -p 8081', '-i', 'input_raspicam.so'];
 const baseDirectory = __dirname + '/www';
 
 var videoStreamerChild;
