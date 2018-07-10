@@ -19,7 +19,7 @@ install(PROGRAMS
 
 
 install(PROGRAMS
-   www/index.html
+   scripts/www/index.html
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}/www
 )
 

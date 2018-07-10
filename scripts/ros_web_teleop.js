@@ -28,12 +28,13 @@ var baseDirectory = __dirname + '/www';
 
 /// Simple web server to host files under the wwww sub-folder
 function httpHandler(request, response) {
+    console.log("Handler called");
     try {
         var requestUrl = url.parse(request.url);
 
         // need to use path.normalize so people can't access directories underneath baseDirectory
         var fsPath = baseDirectory + path.normalize(requestUrl.pathname);
-
+	console.log("Path: " + fsPath);
         var fileStream = fs.createReadStream(fsPath);
         fileStream.pipe(response);
         fileStream.on('open', function () {
@@ -73,6 +74,6 @@ function rostalker() {
 
 if (require.main === module) {
   // Invoke Main Talker Function
-  rostalker();
+  //rostalker();
   http.createServer(httpHandler).listen(8080);
 }
