@@ -7,7 +7,6 @@
  * Hosts a simple Web UI page
 ************************************************************************/
 
-'use strict';
 /**
  * This example demonstrates simple sending of messages over the ROS system.
  */
@@ -23,18 +22,25 @@ var fs = require('fs');
 var http = require('http');
 var io = require('socket.io')(http);
 
+// MJPEG Streamer requires
+const { spawn } = require('child_process');
 
-var baseDirectory = __dirname + '/www';
+const videoStreamerCommand = 'mjpg_streamer';
+const videoStreamerArguments = ['-o', 'output_http.so -w ./www', '-i', 'input_raspicam.so'];
+const baseDirectory = __dirname + '/www';
+
+var videoStreamerChild;
 
 /// Simple web server to host files under the wwww sub-folder
 function httpHandler(request, response) {
+    'use strict';
     console.log("Handler called");
     try {
         var requestUrl = url.parse(request.url);
 
         // need to use path.normalize so people can't access directories underneath baseDirectory
         var fsPath = baseDirectory + path.normalize(requestUrl.pathname);
-	console.log("Path: " + fsPath);
+	      console.log("Path: " + fsPath);
         var fileStream = fs.createReadStream(fsPath);
         fileStream.pipe(response);
         fileStream.on('open', function () {
@@ -52,6 +58,7 @@ function httpHandler(request, response) {
 }
 
 function rostalker() {
+  'use strict';
   // Register node with ROS master
   rosnodejs.initNode('/talker_node')
     .then((rosNode) => {
@@ -72,7 +79,13 @@ function rostalker() {
     });
 }
 
+function spawnMjpegStreamer() {
+    'use strict';
+    videoStreamerChild = spawn(videoStreamerCommand, videoStreamerArguments);
+}
+
 if (require.main === module) {
-  http.createServer(httpHandler).listen(8080);
-  rostalker();
+    http.createServer(httpHandler).listen(8080);
+    spawnMjpegStreamer();
+    rostalker();
 }
