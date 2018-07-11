@@ -1,11 +1,92 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<script src="/socket.io/socket.io.js"></script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script> -->
+	<script>
+	var socket = io(); //load socket.io-client and connect to the host that serves the page
+
+	window.addEventListener("load", function() { //when page loads
+	  
+	  var move_forward = document.getElementById("move_forward"); 
+	  move_forward.addEventListener("mousedown", function() {
+	    socket.emit("move", "forward");
+	  });
+	  move_forward.addEventListener("mouseup", function() {
+	    socket.emit("move", "stop");
+  	  });
+
+	  var move_backward = document.getElementById("move_backward"); 
+	  move_backward.addEventListener("mousedown", function() {
+	    socket.emit("move", "backward");
+	  });
+	  move_backward.addEventListener("mouseup", function() {
+	    socket.emit("move", "stop");
+	  });
+
+	  var move_left = document.getElementById("move_left"); 
+	  move_left.addEventListener("mousedown", function() {
+	    socket.emit("move", "left");
+	  });
+	  move_left.addEventListener("mouseup", function() {
+	    socket.emit("move", "stop");
+      });
+
+	  var move_right = document.getElementById("move_right"); 
+	  move_right.addEventListener("mousedown", function() {
+	    socket.emit("move", "right");
+  	  });
+	  move_right.addEventListener("mouseup", function() {
+	    socket.emit("move", "stop");
+      });
+
+	  var move_stop = document.getElementById("move_stop"); 
+	  move_stop.addEventListener("click", function() {
+	    socket.emit("move", "stop");
+  	  });
+
+	  var capture = document.getElementById("capture"); 
+	  capture.addEventListener("click", function() {
+	    socket.emit("move", "capture");
+  	  });
+
+	});
+
+	socket.on('light', function (data) { //get button status from client
+	  document.getElementById("light").checked = data; //change checkbox according to push button on Raspberry Pi
+	  socket.emit("light", data); //send push button status to back to server
+	});
+	</script>
+
 </head>
 <body>
 	<H1>BIT Teleop Console</H1>
 	<script language="JavaScript">
 		document.write('<iframe src="' + window.location.protocol + '//' + window.location.hostname + ':8081/?action=stream" style="border:none;" width="640" height="480"></iframe>');
 	</script>
+
+	<table border="0">
+		<tr>
+			<td style="width:90px"></td>
+			<td style="width:90px"><input type="button" id="move_forward" value="forward" style="width:80px"></td>
+			<td style="width:90px"></td>
+			<td style="width:90px"></td>
+			<td style="width:90px"></td>
+		</tr>
+		<tr>
+			<td><input type="button" id="move_left" value="left" style="width:80px"></td>
+			<td><input type="button" id="move_stop" value="stop" style="width:80px"></td>
+			<td><input type="button" id="move_right" value="right" style="width:80px"></td>
+			<td></td>
+			<td><input type="button" id="capture" value="capture" style="width:80px"></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><input type="button" id="move_backward" value="backward" style="width:80px"></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+	</table>	
 </body>
 </html>
