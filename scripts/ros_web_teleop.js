@@ -19,7 +19,7 @@ const std_msgs = rosnodejs.require('std_msgs').msg;
 var url = require('url');
 var path = require('path');
 var fs = require('fs');
-var http = require('http');
+var http = require('http').createServer(httpHandler);
 var io = require('socket.io')(http);
 
 // MJPEG Streamer requires
@@ -134,7 +134,7 @@ function startSocketIoListener() {
 }
 
 if (require.main === module) {
-    http.createServer(httpHandler).listen(8080);
+    http.listen(8080);
     startMjpegStreamer();
     startSocketIoListener();
     startRosNode();
