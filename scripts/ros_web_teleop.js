@@ -135,7 +135,7 @@ function startSocketIoListener() {
 
 if (require.main === module) {
     http.listen(8080);
-    startMjpegStreamer();
+    //startMjpegStreamer();
     startSocketIoListener();
     startRosNode();
 }
